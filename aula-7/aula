@@ -1,0 +1,1 @@
+. ~/.bashrc é equivalente a source ~/.bashrc, ou seja, esse '.' (ponto) é o comando 'source'

@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+#---------------------------------------------------------------
+# Script: condicionais
+# Descrição: exemplos de testes de expressões condicionais
+# Versão : 0.1
+# Autor : Marcos Ferreira <mptf@duck.com>
+# Data : 2024-03-23 (-3) at 22:32
+# Licença : Livre para cópias e redistribuições. Vedado usos comerciais
+#---------------------------------------------------------------
+
+clear
+
+# Mensagem
+
+echo "O objetivo desse script é comparar o seu número com o número 5"
+
+# Faz um prompt para entrada de dados. O valor entrado é armazenado em 'numero'
+read -p "Entre com um número de um a dez: " numero
+
+# Tratar erros Como verificar se um número é realmente um número? Pesquisar. Uma solução possível é o
+# uso de expressões regulares
+
+# ! indica negação
+# '=~' indica que a expressão da direita é uma expressão regular
+# [0-9] indica que o primeiro caractere é um valor de zero a nove.
+# + indica que o [0-9] vale não apenas para o primeiro, mas para os próximos também
+# $ indica o fim da cadeia de caracteres (linha)
+# ^ indica o início da cadeia de caracteres (linha)
+# A expressão verifica se todos os valores 'inputados' são numéricos
+
+[[ ! $numero =~ ^[0-9]+$ ]] && echo "Digite um *número*" && exit 1
+
+# Verifica se 'numero' é maior que 10 ou menor que 1. Se algum dos dois testes for verdadeiro, então a
+# mensagem é exibida e o programa é encerrado com código 1 (código de erro).
+[[ $numero -gt 10 || $numero -lt 1 ]] && echo "ERRO! O número deve ser menor que dez e maior que zero"&& exit 1
+
+# Verifica se 'numero' é maior que 10 ou menor ou igual a 0.
+[[ $numero -gt 10 || $numero -le 0 ]] && echo "ERRO! O número deve ser menor que dez e maior que zero" && exit 1
+
+
+# Respostar normais
+
+# -eq = equal
+[[ $numero -eq 5 ]] && echo "Seu número é igual a cinco" && exit 0
+
+# -lt = less than
+[[ $numero -lt 5 ]] && echo "Seu número é menor que cinco" && exit 0
+
+# -gt = greater than
+[[ $numero -gt 5 ]] && echo "Seu número é maior que cinco" && exit 0
+
+

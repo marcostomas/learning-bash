@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+clear
+echo 'Informações muito importantes sobre o sistema'
+echo '------------------------------------------------'
+
+echo -n 'Usuário: '
+whoami
+echo -n 'Máquina: '
+hostname
+echo -n 'Tempo de uso do sistema: '
+uptime -p #pretty
+echo -n 'Versão do kernel: '
+uname -rms

@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+read -p "Digite seu nome: " nome
+read -p "Digite o nome de uma revista: " revista
+read -p "Digite o nome de uma peça de roupa: " roupa
+echo "Você escolheu: $nome, $revista e $roupa."
+
+read -p "Escolha um número de um a três: " num
+[[ ! $num =~ ^[1-3]$ ]] && echo "Valor entrado não é válido! Saindo..." && exit 0
+
+
+frase[1]="$nome saiu na capa da $revista só de $roupa!"
+frase[2]="$nome só consegue ler a $revista usando $roupa!"
+frase[3]="$nome aprendeu na revista $revista que usar $roupa é legal!"
+
+echo "
+${frase[$num]}
+"

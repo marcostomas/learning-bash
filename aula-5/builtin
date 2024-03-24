@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+# Imprime a função em execução, seus argumentos recebidos e a quantidade de argumentos recebidos
+#echo $0
+#echo $1
+#echo $2
+#echo $3
+#echo $#
+
+# Testa se foi passado um argumento
+msg="É preciso informar o nome de um comando válido"
+[[ $# -ne 1 ]]  && echo $msg && exit 1
+
+# Executa "help" para verificar se vai conseguir
+# mostrar a ajuda do comando (sucesso) ou não (erro)
+
+ help $1 &> /dev/null
+#$1
+# Usar comando "test" para avaliar a expressão:
+
+[[ $? -eq 0 ]] && echo "É built-in!" || echo "Não é built-in!"

@@ -1,0 +1,18 @@
+#!/usr/bin/env bash 
+#--------------------------------------------------------------- 
+# Script: checapid
+# Descrição: compara PID do script e do shell no terminal. 
+# Versão: 0.1
+# Autor: Marcos Ferreira <mptf@duck.com>
+# Data : 2024-03-17 23:00:05
+# Licença : Livre para cópias e redistribuições. Vedado usos comerciais 
+#---------------------------------------------------------------
+
+#---------------------------------------------------------------
+
+clear
+
+echo "
+PID da sessão do bash do script: $$
+PID da sessão do bash no terminal: $PPID
+"

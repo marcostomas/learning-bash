@@ -1,0 +1,42 @@
+'echo $?' imprime uma variável especial, que armazena o estado de sucesso ou não sucesso do último comando
+executado. Sendo 0 para verdadeiro (sucesso) e valores diferentes de 0, normalmente 1, representam falso 
+(ou não sucesso)
+
+-----------------------------------------------------------------------------------------------------------
+
+Ao executar: 'sudo apt update && sudo apt upgrade' estou dizendo ao shell que execute o segundo 
+comando apenas se o resultado do primeiro comando for de sucesso. Diferentemente de 'sudo apt update; 
+sudo apt upgrade', em que o segundo comando será executado, independentemente, do sucesso do primeiro
+
+
+Para o caso de erro, podemos usar '||'. No exemplo a seguir, temos que se o teste resultar em 
+verdadeiro, será impresso 'sucesso' e 'erro', em caso de erro. 
+
+test 5 -eq 5 && echo 'sucesso' || echo 'erro'
+
+----------------------------------------------------------------------------------------------------------- 
+Além da notação tradicional do comando test (eg. 'test 5 -eq 5', 'test $?' etc) temos uma notação 
+moderna no bash ('[[ 5 -eq 5 ]]' ou '[[ $? -eq 0 ]]'). Veja oum exemplo a seguir:
+
+[[ $? -eq 0 ]] && echo "É um comando built-in" || echo "Não é um comando built-in"
+
+-----------------------------------------------------------------------------------------------------------
+O camndo 
+
+help type > /dev/null
+
+resulta que a saída do primeiro comando é enviada para /dev/null, mas /dev/null é um arquivo que apaga 
+tudo que lhe é enviado. Porém, pelo comando acima, uma possível mensagem de erro do primeiro comando 
+não seria limpada do terminal. Para que até as mensagens de erro fossem apagadas necessitarámos de 
+adicionar um & ("e comercial") antes do sinal de > ("maior que") como:
+
+help type &> /dev/null
+
+-----------------------------------------------------------------------------------------------------------
+
+$0 -> armazena o nome do programa em execução 
+$1 até $n -> guarda os argumentos passado ao programa em execução ($0), sendo que n é o número de argumentos 
+da função
+$# -> armazena o número de argumentos passados à função em execução ($0)
+$$ -> armazena o PID da sessão corrente do shell
+$? - armazena o status de saída do último programa executado

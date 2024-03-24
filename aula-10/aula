@@ -1,0 +1,84 @@
+#!/usr/bin/env bash
+#---------------------------------------------------------------
+# Script:
+# Descrição:
+# Versão : 0.1
+# Autor : Marcos Ferreira <mptf@duck.com>
+# Data : 2024-03-17 23:00:05
+# Licença : Livre para cópias e redistribuições. Vedado usos comerciais
+#---------------------------------------------------------------
+
+
+# Alinha a seguir define um array
+fruta=("banana" "maçã" "pêra")
+
+# Para imprimir o primeiro valor de um array podemos fazer o seguinte
+echo $fruta #banana
+
+# Para imprimir qualquer valor do array fazemos
+echo ${fruta[2]} #pêra
+
+# É possível notar que para imprimir qualquer valor dentro de um array as chaves são necessárias.
+# Isso também acontece para concatenar string, como no exemplo:
+
+nome="Manoel Carlos"
+aluno="Filho do Manoel Carlos"
+
+
+echo $nomealuno # string vazia. Interpreta 'nomealuno' como um nome de uma variável.
+echo ${nome}aluno # Manoel Carlosaluno. Interpreta 'nome' como uma variável e 'aluno' como uma string.
+
+aluno[23]="Antônio"
+aluno[24]="Matheus"
+aluno[78]="Pedro"
+aluno[1]="Lara"
+aluno[0]="Leno Brega"
+
+# Ampos os exemplos imprimem TODOS OS ELEMENTOS do array, mesmo que esses elementos tenham sido 
+# colocados de forma esparsa
+echo ${aluno[@]}
+echo ${aluno[*]}
+
+# Os dois exemplos imprimem A QUANTIDADE DE ELEMENTOS no array, mesmo que esses elementos tenham sido 
+# colocados de forma esparsa.
+echo ${#aluno[@]}
+echo ${#aluno[*]}
+
+
+# Imprime os índices que tiveram valores definidos.
+echo ${!aluno[@]}
+echo ${!aluno[*]}
+
+# Note que há a possibilidade de uso de * ou @. Ambos funcionam da mesma maneira.
+
+
+# Determina que 'carro' é interpretado como um array associativo. Isso é necessário caso o índice do 
+# array seja uma string e não um número.
+declare -A carro
+
+carro[fiat]="Mobi"
+carro[vw]="Up!"
+carro[byd]="Dolphin Mini"
+carro[renault]="Clio"
+carro[ford]="Ka!"
+
+echo ${#carro[*]}
+echo ${carro[@]}
+echo ${carro[fiat]}
+
+declare -A origem
+origem[fiat]="Itália"
+origem[vw]="Alemanha"
+origem[byd]="China"
+origem[renault]="França"
+origem[ford]="Estados Unidos da América"
+
+
+indice=vw
+echo "${carro[$indice]}" - ${origem[$indice]}
+
+indice=fiat
+echo "${carro[$indice]}" - ${origem[$indice]}
+
+indice=ford
+echo "${carro[$indice]}" - ${origem[$indice]}

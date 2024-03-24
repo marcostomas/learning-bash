@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+
+header="
+#!/usr/bin/env bash
+#---------------------------------------------------------------
+# Script	:
+
+# Descrição	:
+
+# Versão	: 0.1
+# Autor		: Marcos Ferreira <mptf@duck.com>
+# Data		: 2024-03-17 23:00:05
+# Licença	: Livre para cópias e redistribuições. Vedado usos comerciais
+#---------------------------------------------------------------
+"
+
+
+# Opções
+editor=$2
+
+# Testar se o usuário passou o número 
+# certo de argumentos (1 argumento)
+
+# -ne: not equal. esse operador só 
+# compara valores numéricos
+
+[[ $# -ne 2 ]] && 
+echo "Uso: ./novo_script <nome_do_arquivo> <editor>" && 
+echo "Erro ao executar. Tente novamente!" && 
+exit 1
+
+# Testar se o arquivo existe
+
+# -f: procura um arquivo no diretório corrente. Retorna 
+# true (0) se o arquivo for encontrado
+
+[[ -f $1 ]] && echo "O arquivo já existe. Escolha outro nome!" && 
+exit 1
+
+
+echo $header > $1
+chmod +x $1
+$editor $1
+
+
+# O comando 'date' serve para obter a data e hora atual. Formatações são 
+# possíveis, verifique 'date --help'

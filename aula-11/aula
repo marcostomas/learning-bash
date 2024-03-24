@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+#---------------------------------------------------------------
+# Script:
+# Descrição:
+# Versão : 0.1
+# Autor : Marcos Ferreira <mptf@duck.com>
+# Data : 2024-03-24 12:14
+# Licença : Livre para cópias e redistribuições. Vedado usos comerciais
+#---------------------------------------------------------------
+
+nome=Maria
+sobrenome=Antonieta
+
+# Os seguintes comandos vão imprimir exatamente a mesma string
+echo $nome $sobrenome
+echo $nome          $sobrenome
+
+nome_completo="$nome         $sobrenome"
+echo $nome_completo
+
+# O camando a seguir vai preservar os espaços
+echo "$nome_completo"
+
+
+# Ou seja, quando usamos aspas, o conteúdo da string é preservado. Note que para conservar os espaços 
+# foi necessário usar as aspas tanto na definição da variável como ao imprimi-lá.
+
+
+# O uso do caractere de escape "\" (contra-barra) pode ser usada para pular ou diferenciar comandos
+nome_completo=$nome $sobrenome # bash: Antonieta: comando não encontrado
+echo $nome_completo
+
+nome_completo=$nome\ $sobrenome # Funciona
+echo $nome_completo
+
+# Ao definir o texto com aspas simples, o conteúdo é preservado e as variáveis 'nome' e 'sobrenome' 
+# são interpretadas como texto
+nome_completo='$nome $sobrenome'
+echo $nome_completo #$nome $sobrenome
+
+# Para concatenar strings usamos += (operador de atribuição), desta forma:
+
+nome_completo=$nome
+echo $nome_completo # Maria
+
+nome_completo+=$sobrenome 
+echo $nome_completo # MariaAntonieta
+
+nome_completo=$nome
+nome_completo+=" $sobrenome"
+echo $nome_completo # Maria Antonieta
+
+
+nome_completo+="$sobrenome"
+echo $nome_completo # Maria AntonietaAntonieta
+
+
+
+
+
+
+nome=João
+echo "$nome da Silva" # João da Silva

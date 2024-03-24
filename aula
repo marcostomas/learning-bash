@@ -1,0 +1,6 @@
+echo $$ # Exibe o processo em execução
+
+echo $PPID # Exibe o ID do processo pai. Quem é o processo pai?
+
+ps -p $PPID #Exibe o ID do processo pai do processo em execução e, além disso, exibe o tempo em 
+execução e o nome.

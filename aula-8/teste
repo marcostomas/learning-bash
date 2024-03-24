@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+#--------------------------------------------------------------- 
+# Script : 
+# Descrição : 
+# Versão : 0.1 
+# Autor : Marcos Ferreira <mptf@duck.com> 
+# Data : 2024-03-17 23:00:05 
+# Licença : Livre para cópias e redistribuições. Vedado usos comerciais 
+#---------------------------------------------------------------
+
+echo "PID da sessão do shell do script: $$"
