@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+
+# Para declarar variáveis do tipo inteiro usamos: declare -i <variavel>
+declare -i v1
+declare -i v2
+declare -i v3
+
+
+v1=7
+v2=17
+v3=$v1+$v2
+
+echo $v3 # 24
+echo $v1 + $v2 # 7 + 17
+echo $v1+$v2 # 7+17
+
+# Podemos usar também a palavra-chave 'let'
+
+let valor=19
+echo $valor # 19
+
+let valor+=13
+echo $valor # 32
+
+let valor=valor+13
+echo $valor # 45
+
+let valor=$valor+13
+echo $valor # 58
+
+# O comando a seguir nos retorna um erro pois não podemos atribuir variáveis com espaço entre elas. 
+# Uma solução seria utilizar aspas ou o comando composto.
+let valor = valor + 13 # bash: let: =: erro de sintaxe: esperava operando (token de erro é "=")
+
+let "valor = valor + 13"
+echo $valor # 71
+
+# Além do let, podemos usar "(())" (comando composto). Note que com o comando composto podemos 
+# utilizar espaços na atribuição de variáveis.
+(( valor = valor + 13 ))
+echo $valor # 84
+
+# Tanto com let como com o comando composto podemos realizar múltiplas operações de uma só vez.
+(( valor = valor + 13, valor=43))
+echo $valor # 43
+
+let "valor = $valor + 13, valor*=5"
+echo $valor # 280
+
+# Podemos usar também a expansão. Para usa-lá, basta adicionar um dollar sign na frente do comando composto
+echo $(( 2 + 2 )) # 4
+echo "$(( 2 + 2 ))" # 4
+
+# Verifica os comando aritméticos do bash. Note que let é um comando interno, pois 'help' conhece o comando
+help let | less
+
+let " valor = 12 + 12 + 12 - 15"
+echo $valor

@@ -1,0 +1,236 @@
+#!/usr/bin/env bash
+
+clear
+
+echo "Testando os operadores de atribuição...
+"
+
+read -p "Digite um valor: " valor
+
+read -p "Digite um operando: " operando
+
+vo=$valor
+oo=$operando
+
+clear
+
+echo "
+Utilizando a declaração do atributo de inteiro...
+"
+
+declare -i valor
+
+valor+=$operando
+echo "valor+=$operando => $valor"
+
+valor=$valor-$operando
+echo "valor=\$valor-$operando => $valor"
+
+valor=$valor*$operando
+echo "valor=\$valor*$operando => $valor"
+
+valor=$valor/$operando
+echo "valor=\$valor/$operando => $valor"
+
+valor=$valor%$operando
+echo "valor=\$valor%$operando => $valor"
+
+valor=$valor+1
+echo "
+Solução para o operador ++
+valor=\$valor+1 => $valor"
+
+valor=$valor-1
+echo "
+Solução para o operador --
+valor=\$valor-1 => $valor
+"
+
+# ---------------------------------------------
+
+read -s -N1 -p "Tecle algo para continuar..."
+
+valor=$vo
+operando=$oo
+
+clear
+
+echo "
+Utilizando o comando 'let'...
+Valor inicial: $valor
+Operando     : $operando
+"
+
+cmd="let valor+=operando"
+echo "$cmd"
+$cmd
+echo "echo \$valor"
+echo $valor
+echo ""
+
+cmd="let valor-=operando" 
+echo "$cmd"
+$cmd
+echo "echo \$valor"
+echo $valor
+echo ""
+
+cmd="let valor*=operando" 
+echo "$cmd"
+$cmd
+echo "echo \$valor"
+echo $valor
+echo ""
+
+cmd="let valor/=operando" 
+echo "$cmd"
+$cmd
+echo "echo \$valor"
+echo $valor
+echo ""
+
+cmd="let valor%=operando" 
+echo "$cmd"
+$cmd
+echo "echo \$valor"
+echo $valor
+echo ""
+
+cmd="let valor++" 
+echo "
+Operador de incremento (++)
+$cmd"
+$cmd
+echo "echo \$valor"
+echo $valor
+
+cmd="let valor--" 
+echo "
+Operador de decremento (--)
+$cmd"
+$cmd
+echo "echo \$valor"
+echo $valor
+
+echo ""
+
+# ---------------------------------------------
+
+read -s -N1 -p "Tecle algo para continuar..."
+
+valor=$vo
+operando=$oo
+
+clear
+
+echo "
+Utilizando o comando composto '(( ... ))'...
+Valor inicial: $valor
+Operando     : $operando
+"
+
+cmd="((valor+=operando))"
+echo "$cmd"
+eval $cmd
+echo "echo \$valor"
+echo $valor
+echo ""
+
+cmd="((valor-=operando))" 
+echo "$cmd"
+eval $cmd
+echo "echo \$valor"
+echo $valor
+echo ""
+
+cmd="((valor*=operando))" 
+echo "$cmd"
+eval $cmd
+echo "echo \$valor"
+echo $valor
+echo ""
+
+cmd="((valor/=operando))" 
+echo "$cmd"
+eval $cmd
+echo "echo \$valor"
+echo $valor
+echo ""
+
+cmd="((valor%=operando))" 
+echo "$cmd"
+eval $cmd
+echo "echo \$valor"
+echo $valor
+echo ""
+
+cmd="((valor++))" 
+echo "
+Operador de incremento (++)
+$cmd"
+eval $cmd
+echo "echo \$valor"
+echo $valor
+
+cmd="((valor--))" 
+echo "
+Operador de decremento (--)
+$cmd"
+eval $cmd
+echo "echo \$valor"
+echo $valor
+
+echo ""
+
+# ---------------------------------------------
+
+read -s -N1 -p "Tecle algo para continuar..."
+
+valor=$vo
+operando=$oo
+
+clear
+
+echo "
+Utilizando expansões aritméticas '\$(( ... ))'...
+Valor inicial: $valor
+Operando     : $operando
+"
+
+cmd="echo \$((valor+=operando))"
+echo "$cmd"
+eval $cmd
+echo ""
+
+cmd="echo \$((valor-=operando))" 
+echo "$cmd"
+eval $cmd
+echo ""
+
+cmd="echo \$((valor*=operando))" 
+echo "$cmd"
+eval $cmd
+echo ""
+
+cmd="echo \$((valor/=operando))" 
+echo "$cmd"
+eval $cmd
+echo ""
+
+cmd="echo \$((valor%=operando))" 
+echo "$cmd"
+eval $cmd
+
+cmd="echo \$((++valor))" 
+echo "
+Operador de pré-incremento (++)
+$cmd"
+eval $cmd
+
+cmd="echo \$((--valor))" 
+echo "
+Operador de pré-decremento (--)
+$cmd"
+eval $cmd
+
+echo ""
