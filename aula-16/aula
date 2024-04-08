@@ -1,0 +1,137 @@
+#!/usr/bin/env bash
+
+# LOOP FOR
+
+#for NOME [in LISTA]; do
+#	COMANDOS
+#done
+
+# LOOP WHILE
+
+#while CONDIÇÃO; do
+#	COMANDOS
+#done
+
+# LOOP UNTIL - enquanto a condição for falsa, execute o laço, ou seja, a condição deve ser falsa para o laço iniciar
+
+#until CONDIÇÃO; do
+#	COMANDOS
+#done
+
+# LOOP SELECT
+
+#select NOME [in LISTA]; do
+#	COMANDOS
+#done
+
+n=0
+while [[ $n -lt 5 ]]; do
+	echo $n # 0 1 2 3 4
+	((n++))
+done
+
+echo "----------------------"
+
+n=0
+until [[ $n -eq 5 ]]; do
+	echo $n # 0 1 2 3 4
+	((n++))
+done
+
+echo "----------------------"
+
+#n="infinito"
+#while true; do
+#	echo $n
+#done
+
+echo "----------------------"
+
+#n="infinito until"
+#until false; do
+#	echo $n
+#done
+
+echo "----------------------"
+
+n=0
+while true; do
+	[[ $n -lt 100 ]] && echo $n || break
+	echo $n
+	((n++))
+done
+
+echo "----------------------"
+
+select fruta in banana laranja abacate; do
+	echo $fruta
+	break # Se o 'break' não for colocado, o prompt vai continuar a pedir que o usuário coloque um número de input
+done
+
+echo "----------------------"
+
+# A linha a seguir muda o prompt padrçao (#?) para o valor atribuído na variável PS3
+PS3=$'\nEscolha a sua fruta: '
+
+select fruta in banana laranja abacate; do
+	echo $fruta
+	break
+done
+
+
+clear
+
+
+
+fruta=(banana laranja abacate)
+
+while true; do
+
+	clear
+
+	echo "1. Banana"
+	echo "2. Laranja"
+	echo "3. Abacate"
+	echo "4. Sair"
+
+	read -p "Escolha o número da sua opção: " opt
+
+	[[ $opt -eq 4 ]] && break
+
+	echo "Você escolheu ${fruta[$(($opt - 1))]}"
+
+	read -p "Tecle algo para continuar..." continua
+done
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

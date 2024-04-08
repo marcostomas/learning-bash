@@ -1,0 +1,244 @@
+#!/usr/bin/env bash
+
+# Existem algumas formas de escrever o laço for
+# Síntaxe geral:
+
+
+#for NOME [in LISTA]; do
+	#COMANDOS
+#done
+
+# ou
+
+#for NOME [in LISTA]; do COMANDOS; done
+
+#ou
+
+#for NOME [in LISTA]
+#do
+	#COMANDOS
+#done
+
+# NOME é a variável que representa cada elemento da lista. LISTA é a variável que representa a lista. 
+# O comando 'in LISTA' pode ser omitido, neste caso, o loop for assume que 'in LISTA' são todos os 
+# argumentos passados para o script ($@). Quando utilizamos uma expressão aritmética, ela substitui 
+# toda a instrução 'in LISTA'.
+
+for alimento in "pão" "leite" "ovo" "café"; do echo $alimento; done
+
+echo ;echo ;
+
+compras="pão leite ovos farinha presunto manteiga"
+for alimento in $compras; do echo $alimento; done
+
+
+#---------------------------------------------------------------------------------------------------------
+
+# 2. Expressão aritmética como 'in LISTA'
+
+# Sìntaxe geral:
+
+# expressão 1: valor inicial de uma variável
+# expressão 2: condição de parada
+# expressão 3: incremento a cada execução do loop
+
+#for (( expressão 1; expressão 2; expressão 3 )); do
+#	COMANDOS
+#done
+
+# e.g.:
+for (( n=0; n < 10; n++ )); do
+	echo $n
+done
+
+#echo
+
+#for (n=0; n < 10; n=n+2); do
+#	echo $n
+#done
+
+echo
+
+for n in {1..10};do
+	echo $n
+done
+
+echo
+
+# '..2' no final da expansão de chaves representa que o salto será de 2 em 2, logo o resultado 
+# impresso será: 1, 3, 5, 7, 9
+for n in {1..10..2};do
+	echo $n
+done
+
+echo
+
+# Com as expressões do bash é possível facilitar a construção de uma lista, e.g.:
+# output: aa, ab, ac, ..., az, ba, bb, bc, ..., zx, zy, zz
+for excel_column in {a..z}{a..z}; do
+	echo $excel_column
+done
+
+# 4. Percorrendo as palavras de uma string
+
+for v in banana laranja abacate; do
+	echo $v
+done
+
+frutas=banana\nlaranja\nabacate # Sem aspas
+echo $frutas #banananlaranjanabacate. O caractere '\' teve sua funcionalidade preservada, escrevendo o 'n' 
+# que vinha após, mas o código de LINE FEED ANSI C não foi interpretado
+
+frutas="banana\nlaranja\nabacate"
+echo $frutas # banana\nlaranja\nabacate
+
+frutas="banana\$laranja\nabacate"
+echo $frutas # banana$laranja\nabacate
+
+frutas='banana\$laranja\nabacate'
+echo $frutas # banana\$laranja\nabacate
+
+frutas=banana\$laranja\nabacate
+echo $frutas # banana$laranjanabacate
+
+
+# Se escrevermos uma string com um cifrão no início dela, interpretamos a string como ANSI-C
+
+frutas=$'banana\nlaranja\nabacate'
+echo $frutas # banana laranja abacate
+
+# Pode-se também colocar a opção '-e' ao invocar o comando 'echo' para que os caracteres de controle 
+# ANSI-C sejam interpretados. Ao executar apenas 'echo $var', implicitamente, o bash está colocando a 
+# opção -E, que não formata para ANSI-C
+
+frutas="banana\nlaranja\nabacate"
+echo -e $frutas # banana laranja abacate
+
+# Podemos trocar o IFS (variável global que controla o caratere separador'
+
+compras="pão,leite,ovos,margarina,café"
+for p in $compras; do
+	echo $p #pão,leite,ovos,margarina,café
+done
+
+IFS=','
+for p in $compras; do
+	echo $p #pão leite ovos margarina café (em linhas separadas)
+done
+
+echo ; echo ;
+
+# Alterar o IFS não muda para o caso de montar a string com $'', ou seja, se usarmos o separador '\n', 
+# ele ainda será entendido como quebra de linha
+
+compras=$'pão\nleite\novos\nmargarina\ncafé'
+for p in $compras; do
+	echo $p #pão leite ovos margarina café (em linhas distintas)
+done
+
+# 5. Percorrendo elementos de um array
+
+# for v in ${meu_array[@]}; do
+#	echo $v
+#done
+
+echo; echo;
+
+alunos=(João Maria "Luís Carlos")
+
+for nome in ${alunos[@]}; do
+	echo $nome
+done
+# João
+# Maria
+# Luís
+# Carlos
+
+for nome in ${!alunos[@]}; do
+	echo $nome
+done
+# 0
+# 1
+# 2
+
+for nome in ${!alunos[*]}; do
+	echo $nome
+done
+# 0
+# 1
+# 2
+
+for nome in "${alunos[@]}"; do
+	echo $nome
+done
+# João
+# Maria
+# Luís Carlos
+
+# A variável $i representa a posição do índice atual no array
+
+for nome in "${alunos[@]}"; do
+	echo "aluno $i --> ${alunos[$i]}"
+done
+# aluno 0 --> João
+# aluno 1 --> Maria
+# aluno 2 --> Luís Carlos
+
+
+# ---------------------------------------------------------
+
+# 6. Percorrendo nomes de arquivos
+
+#for f in <expansão de nomes de arquivos>; do
+#	echo $f
+#done
+
+echo; echo;
+
+# > cria um arquivo, se ele existir, substitua os registros do arquivo e substitua pelos novos
+# >> faz um append, isto é, adiciona o contúdo passado ao final dele
+
+echo "--------------------"
+for n in {1..5}; do
+	>> arquivo$n #cria 'arquivo1' ... 'arquivo5'
+done
+
+ls arq*
+echo "--------------------"
+
+for f in arquivo*; do
+	mv $f $f.txt # "renomeia" (mas na verdade move) 'arquivo1' para 'arquivo1.txt'  etc
+done
+
+clear
+
+ls -1 arq*
+echo "--------------------"
+
+
+# ---------------------------------------------------------
+
+# 8. Controlando a execução do loop 'for'
+
+# * break    --> interrompe a execução do loop
+# * continue --> não executa comandos e continua o loop
+
+#for NOME [in LISTA]; do
+#	[[ CONDIÇÃO ]] && break
+#done
+
+#for NOME [in LISTA]; do
+#	[[ CONDIÇÃO ]] && continue
+#done
+
+# e.g.
+
+for n in {1..10}; do
+	[[ $n -gt 5 ]] && break || echo $n # 1 2 3 4 5
+done
+
+echo "-------------------------"
+
+for n in {1..10}; do
+	[[ $n -lt 6 ]] && continue || echo $n # 6 7 8 9 10
+done

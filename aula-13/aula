@@ -1,0 +1,130 @@
+#!/usr/bin/env bash
+
+# o que são expansões?
+#Expansão é um termo usado no bash para rerir-se ao processo em que o shell vai interpretar e tratar vários símbolos especiais, também
+#conhecidos como tokens.
+
+fruta=banana
+echo $fruta
+
+# Ao verificar que '$fruta' é um token, que representa algo,  o shell expande este token para o seu representado, no caso 'banana'
+# O mesmo acontene no comando abaixo, onde '*' representa uma expansão, que, neste caso, representa múltiplos caracteres.
+
+ls '*.txt'
+
+# Ou com '~', que representa o diretório 'home' num sistema unix ou unix-like
+echo ~
+
+# Todos as seguintes declarações são expansões
+
+echo aula{1..5} # aula1 aula2 aula3 aula4 aula5
+echo $(( 2 + 2 )) # 4
+echo $(whoami) # marcos
+echo ${fruta^^} # BANANA
+echo '$fruta' # $fruta
+echo "$fruta" # banana
+
+
+# Expansão de caminhos
+
+# ~ : pasta pessoal do usuário
+# - : pasta visitada por último
+
+# Expansão de nome de arquivos
+# * : padrão de zero ou mais caracteres (menos o ponto no início de nomes de arqu ivos - arquivos ocultos)
+# ? : representa um único caractere (menos o ponto no início de nomes de arquivos)
+# [ ]: represeta uma lista de caracteres válidos na posição que ela aparece
+echo * # mostra todos os arquivos no diretório corrente.
+
+# Expansão de chaves
+# {<inicio>..<fim>} : intervalo de strings a serem geradas
+# {str1, str2,...,strN} : lista de strings
+
+mkdir teste{1..5} # cria as pastas 'teste1', 'teste2' até 'teste5'
+touch 1{0..9}-arquivo.txt
+touch fruta-{ca,ba,ma}nana.txt
+
+# Qubras de palavras e de separadores de campo Cada espaço entre palavras é um separador de campo, ou seja, cada palavra, separadas por 
+# espaço, são interpretadas como um campo. A o corrência de aspas ou contra-barra anulam o(s) separador(es) de campo
+
+> curso de bash # cria o arquivo 'curso'
+> "curso de bash" # cria o arquivo "curso de bash"
+
+
+alunos=(João Maria "Luis Carlos")
+
+
+# o 'do' e o 'done' fazem parte do bloco de comando, análogo às chaves em uma linguagem de programação baseada em C, por exemplo
+for aluno in ${alunos[*]}; do
+	echo $aluno 
+done
+
+# O que será impresso pelo echo é o seguinte:
+#João
+#Maria
+#Luís
+#Carlos
+
+for aluno in "${alunos[@]}"; do
+	echo $aluno
+done
+
+# O que será impresso pelo echo é o seguinte:
+#João
+#Maria
+#Luís Carlos
+
+
+for aluno in "${alunos[*]}"; do
+	echo $aluno
+done
+
+# O que será impresso pelo echo é o seguinte:
+#João Maria Luís Carlos
+# O caso acima foi corretamente representado bem como no segundo laço for, a diferença é que com o '*' não uma quebra de linhas
+
+
+#IFS é uma variável de ambiente do shell que armazena qual é o caractere separador de campo. Na linha seguinte eu estou dizendo ao shell 
+#que o separador de campo é a quebra de linha
+IFS=$'\n' 
+
+for aluno in ${alunos[*]}; do
+	echo $aluno
+done
+
+# O que será impresso pelo echo é o seguinte:
+#João
+#Maria
+#Luís Carlos
+
+echo ${#alunos[*]} 
+#Exibe:
+#João
+#Maria
+#Luis Carlos
+#3
+
+# Se comentarmos o IFS=$'\n' e rodarmos o último comando novamente, obteremos:
+#João
+#Maria
+#Luis
+#Carlos
+#3
+
+#Isso nos diz que o problema é, em si, visual. No fundo, o shell entende que o vetor alunos só tem três elementos, ou seja, as várias 
+#formas de imprimir que fizemos apenas alteram o visual da impressão, mas o vetor permanece igual.
+
+
+#Remoção de aspas
+
+fruta=laranaja
+echo "$fruta" #laranja
+
+# Note que quando temos algo entre aspas, desde que não seja proveniente da expasão de uma variável, de uma expressão aritmética, de uma 
+# substituição de comando, o shell eliminará para nós as aspas.
+
+echo teste\ de\ escape #teste de escape
+echo 'teste\ de\ escape' #teste\ de\ escape
+echo '$fruta\ de\ escape' #$fruta\ de\ escape
+echo "$fruta\ de\ escaoe" #laranja\ de\ escape
+echo $fruta\ de\ escape #laranja de escape

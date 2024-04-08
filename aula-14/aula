@@ -1,0 +1,134 @@
+#!/usr/bin/env bash
+
+
+# Expansão de parâmetros
+
+# 1. Velhas conhecidas
+
+# $nome ou ${nome} --> expande para o valor de 'nome'
+# ${nome[índice} --> expande para o valor em 'nome[índice]'
+# ${nome[@|*]} --> expande para os valores de todos os elementos da array 'nome'
+# ${!nome[@|*]} --> expande para os índices dos elementos em 'nome'
+# ${#nome[@|*]} --> expande para o número de elemntos em 'nome'
+
+echo "string 1\nstring 2" #string1\nstring 2
+echo "string 1\nstring 2 *" #string1\nstring 2 *
+echo string 1\nstring 2 * #mostra todos os arquivos no diretório corrente
+
+fruta=banana
+echo $fruta #O comando 'echo' não está realmente enxergando a variável 'fruta' com o cifrão na frente. 
+# O que acontece no comando acima é que o interpretador (shell), que executa antes do echo', expandiu (substituiu) $fruta por banana, isto é, o
+# comando echo exerga apenas banana, desta forma:
+echo banana
+
+# O acesso a uma variável  vai ser sempre uma expansão. E, a rigor, esta expansão deve ser feita com chaves, deste modo:
+echo ${fruta}
+# Porém, as chaves só são necessárias se ocorre alguma string depois do nome da variavel que pudesse ser confundida com o nome da variável
+
+echo $frutaseca # string vazia
+echo ${fruta}seca # bananaseca
+
+alunos=(João Maria "Luis Carlos")
+echo ${alunos[0]} #João
+echo ${alunos[2]} #Luis Carlos
+echo ${alunos[@]} #João Maria Luis Carlos
+echo ${!alunos[@]} #0 1 2
+echo $!frutas #frutas
+echo ${#alunos[@]} # 3
+echo ${#fruta} # 6
+
+
+# 2. Substrings
+# ${nome:posição:quantidade}
+
+ms=1234567890abcdefghij
+
+echo ${#ms} echo ${ms:5} #Exibe o que vem após a quinta posição. No caso, 67890abcdefghij 
+echo ${ms:5} #890abcdefghij 
+echo ${ms: -7} #Conta de trás para frente, como um índice negativo em C, e apaga o que tiver à esquerda. Retorna: defghij 
+echo ${ms: -9} #bcdefghij 
+echo ${ms:5:3} #Conta a quantidade a partir do valor de posição, no caso, exibe o sexto, o sétimo e o oitavo caractere. Retorna: 567 
+echo ${ms:5:-3} #Corta os cinco primeiros e os três últimos caracteres. Retorna 67890abcdefg
+echo ${ms:10:-10} #Corta os dez primeiros e dez os últimos caracteres. Retorna vazio
+echo ${ms:10:-9} # Retorna: a
+echo ${ms:10:-11} # Retorna um erro informado que a substring da direita tem um comprimento menor que zero.
+echo ${ms: -5:-3} # Exibe o que está no intervalo de -5 a -3. Retorna: fg
+
+# Para os casos em que o token que vem depois do primeiro (:) é necessário um espaço para a expansão não ser confundida com a expansão 
+# explicada em 3
+
+# 3. Testando variáveis
+
+# ${nome:-valor_padrao} --> expande para 'valor_padrao' se 'nome' não existe ou é nulo
+# ${nome:=valor_padrao} --> expande para 'valor_padrao' se 'nome' não existe e atribui 'valor_padrao' a 'nome'
+# ${nome:+valor} --> expande para 'valor' se 'nome' existe, ou nada se 'nome' não existe
+# ${nome:?mensagem} --> escreve 'mensagem' na saída de erro se 'nome' não existe ou é nulo
+
+echo ${fauna:-elefante} #elefante
+echo $fauna # vazio
+echo ${fauna:-onça} #onça
+echo $fauna # vazio
+
+echo ${fauna:=elefante} #elefante
+echo $fauna #elefante
+echo ${fauna:-onça} #elefante
+echo ${fauna:+onça} #onça
+
+echo ${fauna:?"mensagem de erro"} #elefante
+# echo ${flora:?"mensagem de erro"} #bash: flora: mensagem de erro
+
+# 4. Maiúsculas e minúsculas
+
+# ${variavel^} --> Primeiro caractere em caixa alta
+# ${variavel^^} --> Todos os caracteres em caixa alta
+# ${variavel,} --> Primeiro caractere em caixa baixa
+# ${variavel,,} --> Todos os caracteres em caixa baixa
+
+fauna=elefante
+
+echo $fauna #elefante
+echo ${fauna^} #Elefante
+echo ${fauna^^} #ELEFANTE
+echo ${fauna,} #elefante
+echo ${fauna,,} #elefante
+
+fauna=águia
+
+echo $fauna #águia
+echo ${fauna^} #Águia
+echo ${fauna^^} #ÁGUIA
+echo ${fauna,} #águia
+echo ${fauna,,} #águia
+
+
+fauna=1ágUIa
+
+echo $fauna #1ágUIa
+echo ${fauna^} #1ágUIa
+echo ${fauna^^} #1ÁGUIA
+echo ${fauna,} #1ágUIa
+echo ${fauna,,} #1águia
+
+
+# 5. Aparando strings
+
+# Caracteres especiais para representar padrões: * ? [...]
+
+# ${variavel#padrao} --> Todos o início da string será aparado até a primeira ocorrência do padrão
+# ${variavel##padrao} --> Todo o início da string será aparado até a última ocorrência do padrão
+# ${variavel%padrao} --> O mesmo do primeiro, só que de trás para frente
+# ${variavel%%padrao} -->  O mesmo do segundo, só que de trás para frente
+
+frutas="banana laranja abacate"
+
+echo ${frutas#b} #anana laranja abacate
+echo ${frutas#*b} #anana laranja bacate
+echo ${frutas##*b} #acate
+echo ${frutas#* } #laranja abacate
+echo ${frutas##* } #abacate. Aqui o padrão é o espaço. 
+
+
+# 6. Busca e substituição
+
+# ${variavel/padrao/string} --> Substitui a primeira ocorrência de 'padrao' por 'string'
+# ${variavel//padrao/string} --> Substitui todas as ocorrências de 'padrao' por 'string'
